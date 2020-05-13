@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Welcome to ``mrpod``, a Python module for carrying out Multiresolution Proper Orthogonal Decomposition of multi-dimensional time series. Please visit the homepage for documentation and examples.
+Welcome to ``mrpod``, a Python module for carrying out Multiresolution Proper Orthogonal Decomposition of multi-dimensional time series. Please visit the [homepage](https://mrpod.readthedocs.io) for documentation and examples.
 
 ## Reference
 
