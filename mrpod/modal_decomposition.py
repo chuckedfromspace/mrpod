@@ -9,14 +9,14 @@ def pod_eigendecomp(corr_mat, tol=1e-14):
     Parameters
     ----------
     corr_mat : ndarray
-        Cross-correlation matrix with a dimension of NxN
+        Cross-correlation matrix with a dimension of NxN.
 
     Returns
     -------
     eigvals : 1d array
-        Eigenvalues from the decomposition
+        Eigenvalues from the decomposition.
     proj_coeffs: ndarray
-        Projection coefficients (temporal modes) of the shape of NxN
+        Projection coefficients (temporal modes) of the shape of NxN.
     """            
     Lambda, Psi = np.linalg.eigh(corr_mat)
     eigvals = Lambda[::-1]
@@ -25,6 +25,64 @@ def pod_eigendecomp(corr_mat, tol=1e-14):
     proj_coeffs = np.fliplr(Psi)[:, :len(eigvals)] @ np.diag(eigvals**(0.5))
 
     return eigvals, proj_coeffs.T
+
+def pod_modes(data_array, eigvals=None, proj_coeffs=None, num_of_modes=None, normalize_mode=True):
+    """
+    Calculate the POD modes based on the eigenvalue decomposition.
+
+    Parameters
+    ----------
+    data_array : ndarray
+        data array arranged in a dimension of NxM0xM1x..., such as a time series (N) of multi-
+        dimensional scalar/vector fields.
+    eigvals : 1d array
+        Eigenvalues from the decomposition.
+    proj_coeffs: ndarray
+        Projection coefficients (temporal modes) of the shape of NxN.
+    num_of_modes : None, int, optional
+        Number of modes to be computed (from the most energetic Mode 1). By default, all the valid
+        modes are computed.
+    normalize_mode : True, bool, optional
+        If True, the magnitudes of the modes will be normalized by their corresponding eingenvalues
+        and the sample size.
+
+    Returns
+    -------
+    dict
+        A dictionary containing the eigenvalues, projection coefficients, POD modes, and the cross-
+        correlation matrix.
+    """
+    shape = np.shape(data_array)
+    data_array = np.reshape(data_array, [shape[0], np.prod(shape[1:])], order='F')
+    corr_mat = None
+
+    if eigvals is None:
+        # compute the cross-correlation matrix
+        corr_mat = data_array @ data_array.T
+        # solve the eigenvalue problem of corr_mat
+        eigvals, proj_coeffs = pod_eigendecomp(corr_mat)
+
+    # make sure the desired number of modes does not exceed the valid modes
+    if num_of_modes is None:
+        num_of_modes = len(eigvals)
+    else:
+        num_of_modes = min(num_of_modes, len(eigvals))
+
+    Omega = np.diag(eigvals[:num_of_modes]**0.5)
+    modes = Omega @ proj_coeffs[:num_of_modes, :] @ data_array
+    modes = np.reshape(modes, [num_of_modes, *shape[1:]], order='F')
+
+    if normalize_mode:
+        modes = np.diag(eigvals[:num_of_modes]**(-1)) @ modes
+        modes = modes / (shape[0])**0.5*2
+
+    dict_data = {'modes': modes,
+                 'eigvals': eigvals,
+                 'proj_coeffs': proj_coeffs,
+                 'corr_mat': corr_mat}
+    return dict_data
+
+
 
 def mrpod_eigendecomp(corr_mat, js, scales, pod_fcn=pod_eigendecomp, reflect=False, **kwargs):
     """
@@ -79,7 +137,7 @@ def mrpod_eigendecomp(corr_mat, js, scales, pod_fcn=pod_eigendecomp, reflect=Fal
 
     return eigvals, proj_coeffs, K, T_oper
 
-def mrpod_detail_bundle(data_array, *args, num_of_modes=None, seg=10, subtract_avg=False,
+def mrpod_detail_bundle(data_array, *args, num_of_modes=50, seg=10, subtract_avg=False,
                         reflect=False, full_path_write=None, **kwargs):
     """
     Computes MRPOD modes, eigvals and proj coeffs from a dataset arranged in an ndarray of the shape
@@ -90,7 +148,7 @@ def mrpod_detail_bundle(data_array, *args, num_of_modes=None, seg=10, subtract_a
     data_array : ndarray
         data array arranged in a dimension of NxM0xM1x..., such as a time series (N) of multi-
         dimensional scalar/vector fields.
-    num_of_modes : None, list, optional
+    num_of_modes : 50, int, optional
         Number of modes to be computed (from the most energetic Mode 1). By default, all the valid
         modes are computed.
     seg : 10, int, optional
@@ -111,8 +169,9 @@ def mrpod_detail_bundle(data_array, *args, num_of_modes=None, seg=10, subtract_a
 
     Returns
     -------
-    eigvals : 1d array
-        Eigenvalues from the decomposition
+    dict
+        A dictionary containing the eigenvalues, projection coefficients, POD modes, and the cross-
+        correlation matrix.
     """
     shape = np.shape(data_array)
     if subtract_avg:
@@ -127,7 +186,10 @@ def mrpod_detail_bundle(data_array, *args, num_of_modes=None, seg=10, subtract_a
     eigvals, proj_coeffs, K, T_oper = mrpod_eigendecomp(corr_mat, *args, reflect=reflect,
                                                         **kwargs)
     # make sure the desired number of modes does not exceed the valid modes
-    num_of_modes = min(num_of_modes, len(eigvals))
+    if num_of_modes is None:
+        num_of_modes = len(eigvals)
+    else:
+        num_of_modes = min(num_of_modes, len(eigvals))
 
     # compute the modes
     T_oper = np.sum(T_oper, axis=(0, 1))
@@ -140,7 +202,7 @@ def mrpod_detail_bundle(data_array, *args, num_of_modes=None, seg=10, subtract_a
         data_seg = data_array[:, i*seg_len:(i+1)*seg_len]
         if reflect:
             data_seg = np.pad(data_seg, ((0, shape[0]), (0, 0)), 'symmetric')
-        # compute 
+        # compute
         B_seg = T_oper @ data_seg
         B_seg = B_seg[:shape[0], :]  # crop out the symmetric part
         modes_seg = Omega @ proj_coeffs[:num_of_modes, :] @ B_seg
