@@ -62,7 +62,6 @@ def scatter_3D(size, **kwargs):
         A collection of scattered points with the shape of 3xsize.
     """
     points = scatter_circular(size, **kwargs)
-    # _z = np.random.random_sample(size)
-    _z = np.random.normal(0, 0.1, size)
+    _z = np.random.random_sample(size)
 
     return np.vstack((points, _z))
