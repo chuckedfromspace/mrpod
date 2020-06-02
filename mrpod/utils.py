@@ -10,11 +10,11 @@ def pkl_dump(path_write, data):
 
     Parameters
     ----------
-    dir_save: dir
+    path_write : dir
         A valid directory in the system
-    name_data: str
+    name_data : str
         The full name of the file to be saved
-    data: python object
+    data : python object
     """
     with open(path_write, 'wb') as pf:
         pickle.dump(data, pf)
@@ -25,9 +25,9 @@ def pkl_load(path_load):
 
     Parameters
     ----------
-    dir_save: dir
+    path_load : dir
         A valid directory in the system
-    name_data: str
+    name_data : str
         The full name of the file to be loaded
     """
     with open(path_load, 'rb') as pf:

@@ -2,6 +2,16 @@ import numpy as np
 from .wavelet_transform import WaveletTransform
 from .utils import pkl_dump
 
+def ortho_check(v1, v2):
+    """
+    Check the orthogonality of two vectors.
+    """
+    v1 = np.reshape(v1, np.prod(np.shape(v1)), order='F')
+    v2 = np.reshape(v2, np.prod(np.shape(v2)), order='F')
+
+    return v1.T @ v2
+
+
 def pod_eigendecomp(corr_mat, tol=1e-14):
     """
     Solving the eigenvalue problem of AX=Lambda.
@@ -26,7 +36,8 @@ def pod_eigendecomp(corr_mat, tol=1e-14):
 
     return eigvals, proj_coeffs.T
 
-def pod_modes(data_array, eigvals=None, proj_coeffs=None, num_of_modes=None, normalize_mode=True):
+def pod_modes(data_array, pod_fcn=pod_eigendecomp, eigvals=None, proj_coeffs=None,
+              num_of_modes=None, normalize_mode=True):
     """
     Calculate the POD modes based on the eigenvalue decomposition.
 
@@ -60,7 +71,7 @@ def pod_modes(data_array, eigvals=None, proj_coeffs=None, num_of_modes=None, nor
         # compute the cross-correlation matrix
         corr_mat = data_array @ data_array.T
         # solve the eigenvalue problem of corr_mat
-        eigvals, proj_coeffs = pod_eigendecomp(corr_mat)
+        eigvals, proj_coeffs = pod_fcn(corr_mat)
 
     # make sure the desired number of modes does not exceed the valid modes
     if num_of_modes is None:
@@ -70,11 +81,10 @@ def pod_modes(data_array, eigvals=None, proj_coeffs=None, num_of_modes=None, nor
 
     Omega = np.diag(eigvals[:num_of_modes]**0.5)
     modes = Omega @ proj_coeffs[:num_of_modes, :] @ data_array
-    modes = np.reshape(modes, [num_of_modes, *shape[1:]], order='F')
-
     if normalize_mode:
         modes = np.diag(eigvals[:num_of_modes]**(-1)) @ modes
         modes = modes / (shape[0])**0.5*2
+    modes = np.reshape(modes, [num_of_modes, *shape[1:]], order='F')
 
     dict_data = {'modes': modes,
                  'eigvals': eigvals,
@@ -138,7 +148,7 @@ def mrpod_eigendecomp(corr_mat, js, scales, pod_fcn=pod_eigendecomp, reflect=Fal
     return eigvals, proj_coeffs, K, T_oper
 
 def mrpod_detail_bundle(data_array, *args, num_of_modes=50, seg=10, subtract_avg=False,
-                        reflect=False, full_path_write=None, **kwargs):
+                        reflect=False, normalize_mode=True, full_path_write=None, **kwargs):
     """
     Computes MRPOD modes, eigvals and proj coeffs from a dataset arranged in an ndarray of the shape
     of NxM0xM1x..., with N being the dimension that will be wavelet transformed.
@@ -159,6 +169,9 @@ def mrpod_detail_bundle(data_array, *args, num_of_modes=50, seg=10, subtract_avg
     reflect : False, bool, optional
         If True, the cross-correlation matrix as well as the dataset is padded symmetrically along
         the sample axis.
+    normalize_mode : True, bool, optional
+        If True, the magnitudes of the modes will be normalized by their corresponding eingenvalues
+        and the sample size.
     full_path_write : None, path obj, optional
         If provided, the output is saved locally in the specified directory.
 
@@ -210,6 +223,10 @@ def mrpod_detail_bundle(data_array, *args, num_of_modes=50, seg=10, subtract_avg
 
         print('Processing segmant %d' % i)
     data_array = []  # free up RAM
+
+    if normalize_mode:
+        modes = np.diag(eigvals[:num_of_modes]**(-1)) @ modes
+        modes = modes / (shape[0])**0.5*2
 
     # convert NxM modes back into the original NxM0xM1... shape.
     modes = np.reshape(modes, [num_of_modes, *shape[1:]], order='F')

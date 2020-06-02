@@ -28,7 +28,10 @@ corr_mat = X.T @ X
 pod_results = pod_modes(X.T, num_of_modes=2)
 proj_coeffs = pod_results['proj_coeffs']
 eigenvec = pod_results['modes']
+# eigvals = pod_results['eigvals']
+# eigvals = eigvals/eigvals.sum()*100
 
+# print(eigvals)
 _, ax = plt.subplots(1, figsize=(5, 5))
 coord_lim = 4
 
@@ -41,12 +44,12 @@ ax.set_aspect(1)
 ax.annotate('', xy=(eigenvec[0,0], eigenvec[0,1]), xytext=(0,0),
             arrowprops=dict(color='r', width=0.5, headlength=8, headwidth=5),
             color='r', ha='center')
-ax.text(eigenvec[0, 0]+0.2, eigenvec[0, 1]+0.2, r'$v_1$', fontsize=16, color='r',
+ax.text(eigenvec[0, 0]+0.3, eigenvec[0, 1]+0.3, r'$\overrightarrow{v}_1$', fontsize=16, color='r',
         ha='center', va='center')
 ax.annotate('', xy=(-eigenvec[1,0], -eigenvec[1,1]), xytext=(0,0),
             arrowprops=dict(color='r', width=0.5, headlength=8, headwidth=5),
             color='r', ha='center')
-ax.text(-eigenvec[1, 0]-0.2, -eigenvec[1, 1]+0.2, r'$v_2$', fontsize=16, color='r',
+ax.text(-eigenvec[1, 0]-0.3, -eigenvec[1, 1]+0.3, r'$\overrightarrow{v}_2$', fontsize=16, color='r',
         ha='center', va='center')
 
 # add fake axes
@@ -71,9 +74,11 @@ ax.text(0.2, coord_lim, r'$y$', fontsize=16)
 # ax.annotate('', xy=(0,coord_lim), xytext=(0,coord_lim-0.2),
 #             arrowprops=dict(color='k', width=0.5, headlength=8, headwidth=5),
 #             color='k', ha='center')
-# ax.text(coord_lim, -0.3, r'$v_1$', fontsize=16)
-# ax.text(0.2, coord_lim, r'$v_2$', fontsize=16)
+# ax.text(coord_lim, -0.3, r'$\overrightarrow{v}_1$', fontsize=16)
+# ax.text(0.2, coord_lim, r'$\overrightarrow{v}_2$', fontsize=16)
 
 ax.axis('off')
+
+# plt.savefig("fig_scatter_projection.png", bbox_inches='tight', dpi=150, transparent=False)
 
 plt.show()

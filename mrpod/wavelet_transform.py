@@ -241,7 +241,7 @@ class CompositeFilter():
             Index of the scale from a certain decomposition level j,
             :math:`n=0,1 \ldots, 2^{j-1}-1`.
         fs : None, 1d array, optional
-            Frequencies to be used for caclulating the transfer function.
+            Frequencies to be used for caclulating the transfer function [0, 1/2).
         max_overlap : False, bool, optional
             If True, the output represent the squared gain from MODWT.
 
@@ -270,7 +270,6 @@ class CompositeFilter():
 
         return gain, fs
 
-    @property
     def max_J(self, N):
         """
         Maximum decomposition level for the data series with the given wavelet filter. Although
