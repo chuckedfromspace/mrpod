@@ -1,7 +1,8 @@
 Greetings
 =========
 
-Welcome to the documentation of the Python module ``mrpod`` for performing
+Welcome to the documentation of the Python module ``mrpod`` (`GitHub depository
+<https://github.com/chuckedfromspace/mrpod>`_) for performing
 Multiresolution Proper Orthogonal Decomposition (MRPOD) of multi-dimensional
 data series (vector and scalar) obtained in turbulent flows.
 
@@ -44,12 +45,13 @@ Why not ``pywt``
 Instead of using the existing Python library ``pywt`` to carry out wavelet
 transform, a matrix-operation based routine was written from the ground up
 specifically for more efficient 1-D and 2-D wavelet decomposition/reconstruction
-of multi-dimensional data series. Although several commonly used wavelet filters
-are built into ``mrpod``, the vast library of wavelet filters in ``pywt``
-should be taken advantage of for constructing custom composite filters using the
-filter-cascading method in ``mrpod``.
+of multi-dimensional data series stored in ndarrays. Although several commonly
+used wavelet filters are built into ``mrpod``, the vast library of wavelet
+filters in ``pywt`` should be taken advantage of when constructing custom 
+composite filters using the filter-cascading method in ``mrpod``.
 
 ----------------
+
 .. [MRDMD] Kutz, J., Fu, X., Brunton, S. Multiresolution dynamic mode
     decomposition. *SIAM Journal on Applied Dynamical Systems* 15 (2), 713-735,
     2016.
@@ -58,6 +60,6 @@ filter-cascading method in ``mrpod``.
     orthogonal decomposition of complex fluid flows.
     *Journal of Fluid Mechanics* 870, 988-1036, 2019.
 
-.. [MRPOD] Yin, Z., and Michael S. Time–Frequency Localisation of Intermittent
+.. [MRPOD] Yin, Z., Stöhr, M. Time–Frequency Localisation of Intermittent
     Dynamics in a Bistable Turbulent Swirl Flame. *Journal of Fluid Mechanics*
     882, A30, 2020.
