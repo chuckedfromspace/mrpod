@@ -33,23 +33,31 @@ snapshot POD. MRPOD has been successfully applied to time series of velocity
 PLIF) in the so-called bistable turbulent swirl flame, a common phenomenon
 encountered in gas turbines.
 
-Why MODWT
-^^^^^^^^^
-
 Bistable turbulent swirl flame
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-References
-^^^^^^^^^^
+Why MODWT
+^^^^^^^^^
 
+Why not ``pywt``
+^^^^^^^^^^^^^^^^
+Instead of using the existing Python library ``pywt`` to carry out wavelet
+transform, a matrix-operation based routine was written from the ground up
+specifically for more efficient 1-D and 2-D wavelet decomposition/reconstruction
+of multi-dimensional data series. Although several commonly used wavelet filters
+are built into ``mrpod``, the vast library of wavelet filters in ``pywt``
+should be taken advantage of for constructing custom composite filters using the
+filter-cascading method in ``mrpod``.
+
+----------------
 .. [MRDMD] Kutz, J., Fu, X., Brunton, S. Multiresolution dynamic mode
     decomposition. *SIAM Journal on Applied Dynamical Systems* 15 (2), 713-735,
     2016.
 
 .. [mPOD] Mendez, M. A., Balabane, M., Buchlin, J. M. Multi-scale proper 
-orthogonal decomposition of complex fluid flows. *Journal of Fluid Mechanics* 
-870, 988-1036, 2019.
+    orthogonal decomposition of complex fluid flows.
+    *Journal of Fluid Mechanics* 870, 988-1036, 2019.
 
 .. [MRPOD] Yin, Z., and Michael S. Time–Frequency Localisation of Intermittent
-Dynamics in a Bistable Turbulent Swirl Flame. *Journal of Fluid Mechanics* 882,
-A30, 2020.
+    Dynamics in a Bistable Turbulent Swirl Flame. *Journal of Fluid Mechanics*
+    882, A30, 2020.
