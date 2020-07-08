@@ -1,10 +1,9 @@
 Greetings
 =========
 
-Welcome to the documentation of the Python module ``mrpod`` (`GitHub depository
-<https://github.com/chuckedfromspace/mrpod>`_) for performing
+Welcome to the documentation of the Python module ``mrpod`` for performing
 Multiresolution Proper Orthogonal Decomposition (MRPOD) of multi-dimensional
-data series (vector and scalar) obtained in turbulent flows.
+time series.
 
 Why ``mrpod``
 ^^^^^^^^^^^^^
@@ -34,14 +33,26 @@ snapshot POD. MRPOD has been successfully applied to time series of velocity
 PLIF) in the so-called bistable turbulent swirl flame, a common phenomenon
 encountered in gas turbines.
 
-Bistable turbulent swirl flame
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
 Why MODWT
 ^^^^^^^^^
 
+``mrpod`` was developed based primarily on the following two criteria:
+    - Dynamics with various frequencies can be identified and adequately
+    isolated.
+    - Discontinuities in temporal behaviors can be properly resolved and align
+    perfectly with the original data series for appropriate comparison.
+
+Unlike the classical DWT, shift-invariant DWT such as MODWT is well-defined for
+arbitrary sample sizes and is not sensitive to the "break-in" point in the time
+series. Additionally, MODWT affords a more "square-looking" gain response and
+hence a higher spectral isolation especially for cases with dynamics densely
+packed in the frequency domain. Although MODWT sacrifices orthonormality, it can
+still carry out an exact analysis of variance as well as a perfect
+reconstruction of the time series.
+
 Why not ``pywt``
 ^^^^^^^^^^^^^^^^
+
 Instead of using the existing Python library ``pywt`` to carry out wavelet
 transform, a matrix-operation based routine was written from the ground up
 specifically for more efficient 1-D and 2-D wavelet decomposition/reconstruction
