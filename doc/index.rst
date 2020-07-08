@@ -12,3 +12,5 @@ Contents
    wavelet_transform
 
    modal_decomposition
+
+   tutorials
