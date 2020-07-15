@@ -3,7 +3,11 @@ Greetings
 
 Welcome to the documentation of the Python module ``mrpod`` for performing
 Multiresolution Proper Orthogonal Decomposition (MRPOD) of multi-dimensional
-time series.
+time series. Although ``mrpod`` was created to tackle problems in turbulent
+flows, this module is equally applicable to various data series to achieve
+frequency-filtering, classification of dynamics, identification of
+discontinuities, etc. The built-in wavelet sub-module can be easily applied to 
+1-D and 2-D dataset for wavelet decomposition and reconstruction.
 
 Why ``mrpod``
 ^^^^^^^^^^^^^
@@ -36,9 +40,11 @@ encountered in gas turbines.
 Why MODWT
 ^^^^^^^^^
 
-``mrpod`` was developed based primarily on the following two criteria:
+``mrpod`` was developed to satisfy primarily the following two criteria:
+
     - Dynamics with various frequencies can be identified and adequately
     isolated.
+
     - Discontinuities in temporal behaviors can be properly resolved and align
     perfectly with the original data series for appropriate comparison.
 
@@ -48,7 +54,9 @@ series. Additionally, MODWT affords a more "square-looking" gain response and
 hence a higher spectral isolation especially for cases with dynamics densely
 packed in the frequency domain. Although MODWT sacrifices orthonormality, it can
 still carry out an exact analysis of variance as well as a perfect
-reconstruction of the time series.
+reconstruction of the time series. With the two aforementioned criteria in mind,
+MODWT has demonstrated overall better performance than DWT at a (manageable)
+cost of computational time.
 
 Why not ``pywt``
 ^^^^^^^^^^^^^^^^
