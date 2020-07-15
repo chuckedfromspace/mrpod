@@ -16,8 +16,8 @@ def pkl_dump(path_write, data):
         The full name of the file to be saved
     data : python object
     """
-    with open(path_write, 'wb') as pf:
-        pickle.dump(data, pf)
+    with open(path_write, 'wb') as pkl_file:
+        pickle.dump(data, pkl_file)
 
 def pkl_load(path_load):
     """
@@ -30,8 +30,8 @@ def pkl_load(path_load):
     name_data : str
         The full name of the file to be loaded
     """
-    with open(path_load, 'rb') as pf:
-        data = pickle.load(pf)
+    with open(path_load, 'rb') as pkl_file:
+        data = pickle.load(pkl_file)
 
     return data
 
@@ -59,4 +59,3 @@ WAVELETS = {
                0.3644418948359564, -0.0519458381078751, -0.0272190299168137, 0.0491371796734768,
                0.0038087520140601, -0.0149522583367926, -0.0003029205145516, 0.0018899503329007]
     }
-

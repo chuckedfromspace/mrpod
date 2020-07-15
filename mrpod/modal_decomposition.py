@@ -27,10 +27,10 @@ def pod_eigendecomp(corr_mat, tol=1e-14):
         Eigenvalues from the decomposition.
     proj_coeffs: ndarray
         Projection coefficients (temporal modes) of the shape of NxN.
-    """            
+    """
     Lambda, Psi = np.linalg.eigh(corr_mat)
     eigvals = Lambda[::-1]
-    eigvals = eigvals[eigvals>tol]
+    eigvals = eigvals[eigvals > tol]
 
     proj_coeffs = np.fliplr(Psi)[:, :len(eigvals)] @ np.diag(eigvals**(0.5))
 
@@ -177,7 +177,7 @@ def mrpod_detail_bundle(data_array, *args, num_of_modes=50, seg=10, subtract_avg
 
     Other Parameters
     ----------------
-    **kwargs : 
+    **kwargs :
         Keyword arguments from ``mrpod_eigendecomp()`` necessary to perform a wavelet transform.
 
     Returns
@@ -233,7 +233,7 @@ def mrpod_detail_bundle(data_array, *args, num_of_modes=50, seg=10, subtract_avg
 
     dict_data = {'modes': modes,
                  'eigvals': eigvals,
-                 'proj_coeffs': proj_coeffs[:num_of_modes,:],
+                 'proj_coeffs': proj_coeffs[:num_of_modes, :],
                  'corr_mat': K}
 
     if full_path_write is not None:

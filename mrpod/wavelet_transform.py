@@ -315,7 +315,7 @@ class WaveletTransform():
         Parameters
         ----------
         X : ndarray
-            Input data. Two shapes are admissible: 
+            Input data. Two shapes are admissible:
             - NxM with N being the sample size and M the total
             amount of physical coordinates (for 1d wavelet transform)
             - NxN with N being the sample size (for 2d wavelet transform)
@@ -385,7 +385,7 @@ class WaveletTransform():
 
     def filter_matrix(self, j, n):
         """
-        Convert the composite filter u_j into its matrix form based on the sample size of N 
+        Convert the composite filter u_j into its matrix form based on the sample size of N.
 
         Parameters
         ----------
@@ -498,7 +498,7 @@ class WaveletTransform():
         for j, n in zip(js, scales):
             u_j_mat = self.filter_matrix(j, n)
             T_oper += u_j_mat.T @ u_j_mat
-            print('Processing j=%d and n=%d' % (j,n))
+            print('Processing j=%d and n=%d' % (j, n))
 
         B_details = T_oper @ self.X
 
