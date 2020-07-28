@@ -406,6 +406,9 @@ class WaveletTransform():
         u_j = np.array(self.filterbank[path]) / (2**(j/2))**self.filter_fct
         # the elements of u_j is assumed zero outside of the length of Lj. In practice u_j is
         # shorter than N, its periodized version is derived by appending N-Lj zeros
+
+        if len(u_j) > self.N:
+            raise ValueError('j too high for the data length. Choose a lower j or a shorter filter')
         u_j_p = np.append(u_j, np.zeros(self.N-len(u_j)))
         # the index_W helps to select the correct elements of u_j_p to form u_j_mat directly
         u_j_mat = u_j_p[self.index_W]
