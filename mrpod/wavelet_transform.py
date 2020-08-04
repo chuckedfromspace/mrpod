@@ -105,18 +105,6 @@ def time_shift(w_j, L, j, scale):
     v_shift = round(-Lj/2 + (2**(j-1) - _s))
     w_j = np.roll(w_j, abs(v_shift))
 
-    # # old code that seems to calculate all shifts for a given j. unnecessary.
-    # S = np.zeros(2**j, dtype='int')
-    # for _i in range(len(c_j)):  # len(c_j)==2**j
-    #     # convert string to numpy array
-    #     c_j[_i] = np.array(list(c_j[_i]), dtype='int')
-    #     for _j in range(len(c_j[_i])):  # len(c_j[_i])==j
-    #         # for each scale
-    #         S[_i] += c_j[_i][_j]*2**_j
-    # v_shift = -Lj/2 + (2**(j-1)-S)
-    # v_shift = v_shift.astype('int')
-    # w_j = np.roll(w_j, abs(v_shift[scale]))
-
     return w_j
 
 
