@@ -36,7 +36,7 @@ def pod_eigendecomp(corr_mat, tol=1e-14):
 
     return eigvals, proj_coeffs.T
 
-def pod_modes(data_array, pod_fcn=pod_eigendecomp, eigvals=None, proj_coeffs=None,
+def pod_modes(data_array, pod_fcn=None, eigvals=None, proj_coeffs=None,
               num_of_modes=None, normalize_mode=True):
     """
     Calculate the POD modes based on the eigenvalue decomposition.
@@ -44,8 +44,12 @@ def pod_modes(data_array, pod_fcn=pod_eigendecomp, eigvals=None, proj_coeffs=Non
     Parameters
     ----------
     data_array : ndarray
-        data array arranged in a dimension of NxM0xM1x..., such as a time series (N) of multi-
+        Data array arranged in a dimension of NxM0xM1x..., such as a time series (N) of multi-
         dimensional scalar/vector fields.
+    pod_fcn : function object
+        Function to solve the eigenvalue problem by taking in a pre-computed cross-correlation
+        matrix. The output must conform to [eigvals, proj_coeffs]. If None, the built-in solver
+        ``pod_eigendecomp`` is used.
     eigvals : 1d array
         Eigenvalues from the decomposition.
     proj_coeffs: ndarray
@@ -63,6 +67,10 @@ def pod_modes(data_array, pod_fcn=pod_eigendecomp, eigvals=None, proj_coeffs=Non
         A dictionary containing the eigenvalues, projection coefficients, POD modes, and the cross-
         correlation matrix.
     """
+    # use the default pod function if none is supplied
+    if pod_fcn is None:
+        pod_fcn = pod_eigendecomp
+
     shape = np.shape(data_array)
     data_array = np.reshape(data_array, [shape[0], np.prod(shape[1:])], order='F')
     corr_mat = None
@@ -94,7 +102,7 @@ def pod_modes(data_array, pod_fcn=pod_eigendecomp, eigvals=None, proj_coeffs=Non
 
 
 
-def mrpod_eigendecomp(corr_mat, js, scales, pod_fcn=pod_eigendecomp, reflect=False, **kwargs):
+def mrpod_eigendecomp(corr_mat, js, scales, pod_fcn=None, reflect=False, **kwargs):
     """
     Apply eigenvalue decomposition to cross-correlation matrices reconstructed in specific
     bandpasses using ``WaveletTranform``.
@@ -108,8 +116,9 @@ def mrpod_eigendecomp(corr_mat, js, scales, pod_fcn=pod_eigendecomp, reflect=Fal
     scales : 1d array of int
         All the scales included in the reconstruction. Discrete scales are admissible.
     pod_fcn : function object
-        Default is the eigenvalue solver from ``numpy``. It can also be supplied by the user, as
-        long as the output conforms to [eigvals, proj_coeffs].
+        Function to solve the eigenvalue problem by taking in a pre-computed cross-correlation
+        matrix. The output must conform to [eigvals, proj_coeffs]. If None, the built-in solver
+        ``pod_eigendecomp`` is used.
     reflect : False, bool, optional
         If true, the corr_mat is padded symmetrically along both axes and is truncated after
         reconstruction and before eigenvalue decomposition. Such measure helps reducing the effect
@@ -132,6 +141,10 @@ def mrpod_eigendecomp(corr_mat, js, scales, pod_fcn=pod_eigendecomp, reflect=Fal
     K : ndarray
         Reconstructed cross-correlation matrix within the designed bandpasses.
     """
+    # use the default pod function if none is supplied
+    if pod_fcn is None:
+        pod_fcn = pod_eigendecomp
+
     corr_mat = np.array(corr_mat)
     N = np.shape(corr_mat)[0]
     if reflect:
