@@ -1,3 +1,7 @@
+.. seealso:: For more detailed discussions on MRPOD, its derivations and
+  applications, please see the publication [MRPOD]_. We also kindly ask you to
+  reference this paper if you use ``mrpod`` for your publications.
+
 Greetings
 =========
 
@@ -6,7 +10,7 @@ Multiresolution Proper Orthogonal Decomposition (MRPOD) of multi-dimensional
 time series. Although ``mrpod`` was created to tackle problems in turbulent
 flows, this module is equally applicable to various data series to achieve
 frequency-filtering, classification of dynamics, identification of
-discontinuities, etc. The built-in wavelet sub-module can be easily applied to 
+discontinuities, etc. The built-in wavelet sub-module can be easily applied to
 1-D and 2-D dataset for wavelet decomposition and reconstruction.
 
 Why ``mrpod``
@@ -19,7 +23,7 @@ flows. In reacting flows such as confined turbulent flames (in gas turbines),
 however, we are often confronted with both periodic (e.g., hydrodynamic and
 acoustic instabilities) and non-periodic dynamics (e.g., flame lift-off,
 flashback, and bistability), which can coexist over a wide range of time scales
-and may even interact with each other. 
+and may even interact with each other.
 
 In their most rudimentary forms, POD and DMD have proven insufficient at
 separating these dynamics while resolving their temporal behaviors (such as
@@ -27,7 +31,7 @@ discontinuities) at the same time. On the other hand, by marrying the concept of
 wavelet-based Multiresolution Analysis (MRA) with standard modal decompositions,
 multiresolution DMD ([MRDMD]_) and multi-scale POD ([mPOD]_) have demonstrated
 robust capabilities at identifying unsteady dynamics and discontinuities in time
-series. 
+series.
 
 Based on a similar concept, multiresolution POD ([MRPOD]_) has been developed by
 combining Maximum-Overlap Discrete Wavelet Transform (MODWT) with conventional
@@ -42,11 +46,10 @@ Why MODWT
 
 ``mrpod`` was developed to satisfy primarily the following two criteria:
 
-    - Dynamics with various frequencies can be identified and adequately
-    isolated.
+- Dynamics with various frequencies can be identified and adequately isolated.
 
-    - Discontinuities in temporal behaviors can be properly resolved and align
-    perfectly with the original data series for appropriate comparison.
+- Discontinuities in temporal behaviors can be properly resolved and align
+  perfectly with the original data series for appropriate comparison.
 
 Unlike the classical DWT, shift-invariant DWT such as MODWT is well-defined for
 arbitrary sample sizes and is not sensitive to the "break-in" point in the time
@@ -66,7 +69,7 @@ transform, a matrix-operation based routine was written from the ground up
 specifically for more efficient 1-D and 2-D wavelet decomposition/reconstruction
 of multi-dimensional data series stored in ndarrays. Although several commonly
 used wavelet filters are built into ``mrpod``, the vast library of wavelet
-filters in ``pywt`` should be taken advantage of when constructing custom 
+filters in ``pywt`` should be taken advantage of when constructing custom
 composite filters using the filter-cascading method in ``mrpod``.
 
 ----------------
@@ -75,7 +78,7 @@ composite filters using the filter-cascading method in ``mrpod``.
     decomposition. *SIAM Journal on Applied Dynamical Systems* 15 (2), 713-735,
     2016.
 
-.. [mPOD] Mendez, M. A., Balabane, M., Buchlin, J. M. Multi-scale proper 
+.. [mPOD] Mendez, M. A., Balabane, M., Buchlin, J. M. Multi-scale proper
     orthogonal decomposition of complex fluid flows.
     *Journal of Fluid Mechanics* 870, 988-1036, 2019.
 

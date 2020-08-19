@@ -1,12 +1,12 @@
 Tutorials
 =========
 
-Composite wavelet filterbank
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A few tutorials are included here to get you started with wavelet-based MRA,
+POD as well as MRPOD using the module ``mrpod``.
 
+.. toctree::
+   :maxdepth: 1
 
-POD
-^^^
+   vector_field_decomposition_1
 
-MRPOD
-^^^^^
+   vector_field_decomposition_2
