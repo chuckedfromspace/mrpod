@@ -13,9 +13,9 @@ The goal is to try to recognize the flow pattern based on the POD results.
 Synthesize dataset
 ^^^^^^^^^^^^^^^^^^
 
-This vortex pattern is a signature of the a 3-dimensional helical precessing
+This vortex pattern is a signature of the 3-dimensional helical precessing
 vortex core in a 2D cut plane. This is usually seen in planar Particle Image
-Velocimetry measurements. To create these traveling vortices,  twostationary
+Velocimetry measurements. To create these traveling vortices,  two stationary
 modes are required as dictated by:
 
 .. math::
@@ -55,8 +55,10 @@ as:
 .. code:: python
 
   from mrpod import pod_modes
+
   # v_array is the pre-generated dataset
   pod_results = pod_modes(v_array, num_of_modes=4, normalize_mode=True)
+
   # get the modes and projection coefficients
   proj_coeffs = pod_results['proj_coeffs']
   modes = pod_results['modes']
@@ -86,10 +88,10 @@ at the projection coefficients of these two modes:
 When the projection coefficients are plotted against each other in a so-called
 phase portrait, they fall onto a perfect circle, indicating the phase shift of
 90 degrees. A peak at 470 Hz can be identified in both of their power spectra
-densities. Both the phase shift and the peak frequency match the values
+densities (PSD). Both the phase shift and the peak frequency match the values
 used to generate the traveling vortices in the first place.
 
-Without a prior knowledge of how a physical flow dynamic is created, it is
+Without prior knowledge of how the flow dynamic is created, it is
 perhaps not immediately clear what we should make of the POD modes. The example
 shown here aims to answer this question: how can we identify coherent structures
 in the flow field (or similar environments) from the POD results? The clues can
@@ -102,7 +104,7 @@ be found above and can be summarized below:
 - Their projection coefficients should exhibit a regular correlation in the
   phase portrait,
 
-- which should have very similar footprints in the spectral domain
+- which should have very similar footprints in the spectral domain.
 
 These 4 criteria should be considered when trying to recognize physical flow
 patterns based on data-driven POD.
@@ -132,7 +134,7 @@ modes):
 
 The results are nearly identical to the ones from the original dataset. It is
 clear that with this noise level POD has no problem of extracting the modes
-associated to the flow pattern. However now that the flow pattern is not
+associated to the flow pattern. Since now that the flow pattern is not
 immediately clear from the noisy dataset, can we somehow visualize it with the
 POD modes? Recall how the original dataset is generated and analogously we can
 "reconstruct" the dataset with selected modes according to
@@ -166,9 +168,9 @@ the noisier dataset below:
 .. image:: images/mov_pvc_subnoise.gif
    :scale: 50 %
 
-The noise level has been jacked way up. The POD results are quite noisy to the
-point that they cannot really be used to unambiguously visualize the hidden flow
-pattern (only the first two modes are shown):
+The noise level has been cranked way up. The POD results below are quite noisy
+to the point that they cannot really be used to unambiguously visualize the
+hidden flow pattern (only the first two modes are shown):
 
 .. image:: images/fig_pvc_modes_subnoise.png
 
@@ -185,7 +187,7 @@ Another drawback of POD is that it is a purely energy-based decomposition
 process and it disregards all temporal correlations in the dataset. Even if we
 were to randomly shuffle the 400 frames in the datasets above, we would get
 exactly the same results (we wouldn't be able to get the frequency of the
-traveling vortices though). This lack of so-called "energy ranking" becomes
+traveling vortices though). This lack of so-called "dynamic ranking" becomes
 quite problematic in a scenario where multiple dynamics coexist across a wide
 range of time scales.
 
@@ -228,14 +230,11 @@ spatial modes nor their projection coefficients possess the spectral purity to
 allow unambiguous interpretation of the underlying dynamics.
 
 .. warning:: From these two examples it is clear that POD modes do not equate
-  patterns. It is always necessary to first understand the underlying physics
-  (in this case, the traveling structures) before attempting to interpret the
-  POD results
+  physical patterns. It is always necessary to first understand the underlying
+  physics (in this case, the traveling structures) before attempting to
+  interpret the POD results.
 
 .. seealso:: To fix this issue, we need to introduce dynamic ranking into the
   POD process. In the next tutorial :doc:`vector_field_decomposition_2`, MRPOD
   is demonstrated on these two "challenging" datasets to showcase its
   capabilities.
-
-.. note:: The figures included in this tutorial can be created using the
-  routines in `plot_vortices.py` under ``plots``.
