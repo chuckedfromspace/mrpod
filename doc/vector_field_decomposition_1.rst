@@ -21,7 +21,7 @@ modes are required as dictated by:
 .. math::
   \boldsymbol{v}(x,t)=e^{-iwt}\boldsymbol{\Phi}(x)=\cos wt\cdot\Re(\boldsymbol{\Phi}) + \sin wt\cdot\Im(\boldsymbol{\Phi})
 
-In this case :math:`\Re(\boldsymbol{\Phi})` and :math:`\Im(\boldsymbol{\Phi})`
+In this specific case :math:`\Re(\boldsymbol{\Phi})` and :math:`\Im(\boldsymbol{\Phi})`
 are constructed as:
 
 .. image:: images/fig_pvc_01.png

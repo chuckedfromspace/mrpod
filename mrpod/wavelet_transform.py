@@ -1,3 +1,7 @@
+"""
+Matrix-based computation of discrete wavelet transform:
+1. Construct the wavelet filter
+"""
 import numpy as np
 from .utils import pkl_dump, pkl_load, WAVELETS
 
