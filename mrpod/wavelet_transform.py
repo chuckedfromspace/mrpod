@@ -510,6 +510,37 @@ class WaveletTransform:
 
         return power_spectrum
 
+    def t_operator(self, js, scales):
+        """
+        Compute the transfer operator (T) for obtaining detail bundle
+
+        Parameters
+        ----------
+        js : 1d array of int
+            The correponding decomposition levels. Different j levels are
+            admissible.
+        scales: 1d array of int
+            All the scales included in the reconstruction. Discrete scales are
+            admissible.
+
+        Returns
+        -------
+        T_oper : ndarray
+            Transfer operator for detail bundle with the dimension of NxN.
+
+        Notes
+        -----
+        `js` and `scales` need to have the same length.
+        """
+
+        # construct the transfer operator T_oper
+        T_oper = np.zeros([self.N, self.N])
+        for j, n in zip(js, scales):
+            u_j_mat = self.filter_matrix(j, n)
+            T_oper += u_j_mat.T @ u_j_mat
+            print("\rProcessing j=%d and n=%d" % (j, n), end="")
+        return T_oper
+
     def detail_bundle_1d(self, js, scales):
         """
         Reconstruct the input data with MODWT at specified j levels and with
